@@ -1,11 +1,24 @@
 ---
-import Welcome from '../components/Welcome.astro';
-import Layout from '../layouts/Layout.astro';
-
-// Welcome to Astro! Wondering what to do next? Check out the Astro documentation at https://docs.astro.build
-// Don't want to use any of this? Delete everything in this file, the `assets`, `components`, and `layouts` directories, and start fresh.
+import Blog from "../components/Blog.astro"
+import Categories from "../components/Categories.astro"
+import Featured from "../components/Featured.astro"
+import Hero from "../components/Hero.astro"
+import Layout from "./layouts/Layout.astro"
+import Newsletter from "../components/Newsletter.tsx"
+import { ClientRouter } from 'astro:transitions';
 ---
 
-<Layout>
-	<Welcome />
+<Layout title = "Home page">
+<Hero />
+
+<!--------Featured------->
+<Featured />
+
+<!----Categories----> 
+<Categories/>
+
+<!----Blogs----> 
+<Blog/>
+<!----NewsLetter---->
+<Newsletter client:visible/> 
 </Layout>
