@@ -1,0 +1,57 @@
+---
+import { sanityClient } from "sanity:client";
+import type { PostItem } from "../libs/Postitem";
+import { Image } from "astro:assets";
+
+// Fetch posts from Sanity
+const posts: PostItem[] = await sanityClient.fetch('*[_type == "post"]{category}');
+
+// Define props
+interface Props {
+    link: string;
+    image: ImageMetadata;
+    text: string;
+    category: string;
+}
+
+const { link, image, text, category } = Astro.props;
+// Filter posts by category
+const categoryPost = posts.filter((post) => post.category === category);
+---
+
+<a href={link} class="category relative mb-8 inline-block overflow-hidden min-h-[300px]">
+    <!-- Overlay -->
+    <div class="overlay absolute left-0 top-0 z-10 h-full w-full rounded-lg bg-black opacity-0 transition-opacity duration-300"/>
+
+    <!-- Image -->
+    <Image class="rounded-lg w-full h-auto" src={image} alt={category} />
+
+    <!-- Text (e.g., "Daily Digest") -->
+    <span class="absolute bottom-4 left-4 z-20 rounded-full bg-primary-400 px-4 py-2 text-200 font-600 transition-all duration-500">
+        {text}
+    </span>
+
+    <!-- Category Name -->
+    <p class="absolute bottom-[-3rem] left-4 z-30 text-200 font-500 transition-all delay-100 duration-500">
+        {categoryPost.length} article{categoryPost.length !== 1 ? 's' : ''}
+    </p>
+</a>
+
+<style>
+    /* Hover effect for overlay */
+    .category:hover .overlay {
+        opacity: 0.65;
+    }
+
+    /* Hover effect for text */
+    .category:hover span {
+        bottom: 3rem;
+        padding: 0;
+        background-color: transparent;
+    }
+
+    /* Hover effect for category name */
+    .category:hover p {
+        bottom: 1rem;
+    }
+</style>

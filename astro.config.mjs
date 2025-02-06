@@ -1,31 +1,28 @@
 // @ts-check
 import { defineConfig } from 'astro/config';
-
 import tailwind from '@astrojs/tailwind';
-
 import react from '@astrojs/react';
-
 import sanity from '@sanity/astro';
-import node from '@astrojs/node';
+import netlify from '@astrojs/netlify';
 
-import netlify, { remotePatternToRegex } from '@astrojs/netlify';
-
-// https://astro.build/config
 export default defineConfig({
-  integrations: [tailwind(), react(), sanity({
-    projectId: 'swaaax0t',
-    dataset: 'production',
-    useCdn: true, //it was set to true from false because it's not a static page
-    studioBasePath: "/admin",
-  })],
-
-  output: 'server', 
-  devToolbar:{
+  integrations: [
+    tailwind(),
+    react(),
+    sanity({
+      projectId: 'swaaax0t',
+      dataset: 'production',
+      useCdn: true,
+      studioBasePath: "/admin",
+      // Remove this prerender config from Sanity integration
+    })
+  ],
+  output: 'server',
+  adapter: netlify(),
+  devToolbar: {
     enabled: false
   },
-  adapter: netlify(),
-  
   image: {
-      remotePatterns: [{protocol: "http"}, {protocol: "https"}]
-    }
+    remotePatterns: [{}] // Simplified to allow all images
+  }
 });
